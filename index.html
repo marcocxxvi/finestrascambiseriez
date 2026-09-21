@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Serie Z · Mercato scambi 2026/27</title>
+  <meta name="description" content="Il portale ufficiale del mercato scambi della Serie Z: finestre, countdown in tempo reale e tutti gli scambi della stagione.">
+  <meta name="theme-color" content="#0d0e11">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <!-- Font: Big Shoulders Display (numeri e titoli) + Manrope (testi) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Vai al contenuto</a>
+
+  <!-- =====================================================================
+       HEADER
+       ===================================================================== -->
+  <header class="site-header">
+    <div class="wrap header-in">
+      <a class="brand" href="#hero" aria-label="Serie Z, torna in cima">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" stroke-opacity=".3" stroke-width="2.5"/>
+          <path d="M21 22h22L21 42h22" fill="none" stroke="var(--accent)" stroke-width="5.5" stroke-linecap="square"/>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name" data-league>SERIE Z</span>
+          <span class="brand-sub">Mercato scambi · Stagione <span data-season>2026/27</span></span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Sezioni della pagina">
+        <a href="#calendario">Calendario</a>
+        <a href="#statistiche">Statistiche</a>
+        <a href="#scambi">Scambi</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- =====================================================================
+         HERO · countdown (riempito da script.js)
+         ===================================================================== -->
+    <section class="hero" id="hero" data-state="closed" aria-labelledby="hero-title">
+      <!-- Campo da calcio stilizzato: linee sottili sullo sfondo -->
+      <svg class="pitch" viewBox="0 0 1200 640" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" aria-hidden="true" focusable="false">
+        <rect x="40" y="40" width="1120" height="560" rx="4"/>
+        <line x1="600" y1="40" x2="600" y2="600"/>
+        <circle cx="600" cy="320" r="120"/>
+        <circle cx="600" cy="320" r="5" fill="currentColor"/>
+        <rect x="40" y="170" width="170" height="300"/>
+        <rect x="40" y="245" width="60" height="150"/>
+        <rect x="990" y="170" width="170" height="300"/>
+        <rect x="1100" y="245" width="60" height="150"/>
+        <path d="M210 262A82 82 0 0 1 210 378"/>
+        <path d="M990 262A82 82 0 0 0 990 378"/>
+      </svg>
+
+      <div class="wrap hero-in">
+        <h1 class="hero-title" id="hero-title">Mercato scambi</h1>
+        <p class="hero-sub" id="hero-sub"></p>
+
+        <div class="units" id="units" role="timer" aria-label="Tempo rimanente">
+          <div class="unit" data-unit="days"><div class="num">00</div><div class="unit-label">Giorni</div></div>
+          <div class="unit" data-unit="hours"><div class="num">00</div><div class="unit-label">Ore</div></div>
+          <div class="unit" data-unit="minutes"><div class="num">00</div><div class="unit-label">Minuti</div></div>
+          <div class="unit" data-unit="seconds"><div class="num">00</div><div class="unit-label">Secondi</div></div>
+        </div>
+
+        <div class="hero-foot">
+          <div class="progress" id="progress" hidden>
+            <div class="bar" id="bar" role="progressbar" aria-label="Tempo trascorso della finestra" aria-valuemin="0" aria-valuemax="100"><i id="bar-fill"></i></div>
+            <div class="bar-labels"><span id="bar-start"></span><span id="bar-end"></span></div>
+          </div>
+          <p class="deadline" id="hero-deadline"></p>
+          <p class="note" id="hero-note" hidden>Ultime 24 ore: il mercato sta per chiudere.</p>
+          <p class="clock" id="hero-clock"></p>
+        </div>
+      </div>
+    </section>
+
+    <noscript>
+      <p class="wrap noscript">Per vedere il countdown e gli scambi serve JavaScript attivo nel browser.</p>
+    </noscript>
+
+    <!-- Prossima finestra / ultima finestra conclusa -->
+    <div class="wrap strip" id="strip"></div>
+
+    <!-- =====================================================================
+         CALENDARIO
+         ===================================================================== -->
+    <section class="section" id="calendario" aria-labelledby="calendario-title">
+      <div class="wrap">
+        <header class="section-head">
+          <h2 class="section-title" id="calendario-title">Calendario mercato <span data-season>2026/27</span></h2>
+          <p class="section-note" id="calendario-note"></p>
+        </header>
+        <ol class="timeline" id="timeline"></ol>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         STATISTICHE
+         ===================================================================== -->
+    <section class="section" id="statistiche" aria-labelledby="statistiche-title">
+      <div class="wrap">
+        <header class="section-head">
+          <h2 class="section-title" id="statistiche-title">Statistiche</h2>
+        </header>
+        <div class="stats" id="stats"></div>
+        <div class="team-panel glass" id="team-panel"></div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SCAMBI
+         ===================================================================== -->
+    <section class="section section--last" id="scambi" aria-labelledby="scambi-title">
+      <div class="wrap">
+        <header class="section-head">
+          <h2 class="section-title" id="scambi-title">Ultimi scambi</h2>
+          <p class="section-note" id="trades-count"></p>
+        </header>
+
+        <div class="filters">
+          <div class="chips" id="window-filters" role="group" aria-label="Filtra per finestra"></div>
+          <label class="team-filter">
+            <span class="sr">Filtra per squadra</span>
+            <select id="team-filter"></select>
+          </label>
+        </div>
+        <p class="results-note" id="results-note" aria-live="polite"></p>
+
+        <div class="trades" id="trades"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-in">
+      <p><strong data-league>Serie Z</strong> · Mercato scambi <span data-season>2026/27</span></p>
+      <p>Tutti gli orari sono espressi in ora di Roma.</p>
+    </div>
+  </footer>
+
+  <!-- Ordine importante: prima i dati, poi la logica -->
+  <script src="config.js"></script>
+  <script src="trades.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
